@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import DiagnosticCenterService from "../Services/DiagnosticCenterService";
 import { Link, withRouter } from "react-router-dom";
 
-export class ListCenters extends React.Component {
+class ListCenters extends React.Component {
   constructor(props) {
     super(props);
 
@@ -13,11 +13,11 @@ export class ListCenters extends React.Component {
     this.deleteCenter = this.deleteCenter.bind(this);
   }
 
-  componentDidMount = () => {
+  componentDidMount() {
     DiagnosticCenterService.viewAllCenters().then((res) => {
       this.setState({ centers: res.data });
     });
-  };
+  }
 
   updateCenter = (centerId) => {
     this.props.history.push(`/updatecenter/${centerId}`);

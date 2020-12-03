@@ -2,20 +2,24 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import DiagnosticCenterService from "../Services/DiagnosticCenterService";
 
+const initialState = {
+  name: "",
+  contactNo: "",
+  contactEmail: "",
+  address: "",
+  servicesOffered: "",
+  resp: "",
+  emailError: "",
+  contactNoError: "",
+  nameError: "",
+};
 class AddCenter extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      name: "",
-      contactNo: "",
-      contactEmail: "",
-      address: "",
-      servicesOffered: "",
-      resp: "",
-    };
+    this.state = initialState;
     this.onInputChangeHandler = this.onInputChangeHandler.bind(this);
-    this.saveEmployee = this.saveEmployee.bind(this);
+    this.saveCenter = this.saveCenter.bind(this);
   }
 
   onInputChangeHandler = (event) => {
@@ -24,24 +28,52 @@ class AddCenter extends React.Component {
     this.setState({ [name]: value });
   };
 
-  saveEmployee = (event) => {
-    event.preventDefault();
-    let diagnosticCenter = {
-      id: this.state.id,
-      name: this.state.name,
-      contactNo: this.state.contactNo,
-      address: this.state.address,
-      contactEmail: this.state.contactEmail,
-      servicesOffered: this.state.servicesOffered,
-    };
-    console.log("diagnosticCenter => " + JSON.stringify(diagnosticCenter));
+  validate = () => {
+    const emailValidator = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const phoneValidator = /^\d{10}$/;
+    let nameError = "";
+    let emailError = "";
+    let contactNoError = "";
+    if (!this.state.name) {
+      nameError = "Name cannot be empty";
+    }
+    if (!this.state.contactNo.match(phoneValidator)) {
+      contactNoError = "Enter valid contact number";
+    }
+    if (this.state.contactEmail == "") {
+      emailError = "Email Cannot be empty";
+    } else if (!this.state.contactEmail.match(emailValidator)) {
+      emailError = "Enter a valid email";
+    }
+    if (emailError || contactNoError || nameError) {
+      this.setState({ emailError, contactNoError, nameError });
+      return false;
+    }
+    return true;
+  };
 
-    const { history } = this.props;
-    DiagnosticCenterService.addDiagnosticCenter(diagnosticCenter).then(
-      (res) => {
-        history.push("/centerlist");
-      }
-    );
+  saveCenter = (event) => {
+    event.preventDefault();
+    const isValid = this.validate();
+    if (isValid) {
+      let diagnosticCenter = {
+        id: this.state.id,
+        name: this.state.name,
+        contactNo: this.state.contactNo,
+        address: this.state.address,
+        contactEmail: this.state.contactEmail,
+        servicesOffered: this.state.servicesOffered,
+      };
+      console.log("diagnosticCenter => " + JSON.stringify(diagnosticCenter));
+      this.setState(initialState);
+
+      const { history } = this.props;
+      DiagnosticCenterService.addDiagnosticCenter(diagnosticCenter).then(
+        (res) => {
+          history.push("/centerlist");
+        }
+      );
+    }
   };
 
   render() {
@@ -62,16 +94,19 @@ class AddCenter extends React.Component {
                       onChange={this.onInputChangeHandler}
                       required
                     />
+                    <p style={{ color: "red" }}>{this.state.nameError}</p>
                   </div>
                   <div className="form-group">
                     <label> Contact Number: </label>
                     <input
+                      type="number"
                       name="contactNo"
                       className="form-control"
                       value={this.state.contactNo}
                       onChange={this.onInputChangeHandler}
                       required="true"
                     />
+                    <p style={{ color: "red" }}>{this.state.contactNoError}</p>
                   </div>
 
                   <div className="form-group">
@@ -83,6 +118,7 @@ class AddCenter extends React.Component {
                       onChange={this.onInputChangeHandler}
                       required
                     />
+                    <p style={{ color: "red" }}>{this.state.emailError}</p>
                   </div>
                   <div className="form-group">
                     <label> Address: </label>
@@ -108,14 +144,14 @@ class AddCenter extends React.Component {
                   <button
                     className="btn btn-success"
                     type="submit"
-                    onClick={this.saveEmployee}
+                    onClick={this.saveCenter}
                   >
                     Add Test
                   </button>
                   <button
                     className="btn btn-success"
                     type="submit"
-                    onClick={this.saveEmployee}
+                    onClick={this.saveCenter}
                     style={{ marginLeft: "10px" }}
                   >
                     Save
