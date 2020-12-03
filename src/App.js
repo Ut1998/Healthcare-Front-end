@@ -1,23 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import LoginComponent from "./LoginComponent";
+import ListCenters from "./Components/ListCenters";
+import Home from "./Home";
+import { Route, Switch } from "react-router-dom";
+import AddCenter from "./Components/AddCenter";
+import MainPage from "./Components/MainPage";
+import NotFound from "./Components/NotFound";
+import UpdateCenter from "./Components/UpdateCenter";
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Switch>
+        <Route exact path="/" component={Home} />
+        <Route path="/addCenter" component={AddCenter}></Route>
+        <Route path="/login" component={LoginComponent}></Route>
+        <Route path="/centerlist" component={ListCenters}></Route>
+        <Route path="/mainpage" component={MainPage}></Route>
+        <Route
+          exact
+          path="/updatecenter/:centerId"
+          component={UpdateCenter}
+        ></Route>
+        <Route component={NotFound} />
+      </Switch>
     </div>
   );
 }
