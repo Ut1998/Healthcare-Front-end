@@ -89,6 +89,23 @@ class AdminPage extends React.Component {
               <div className="col-sm-4">
                 <div class="card" style={{ width: "18rem" }}>
                   <img
+                    src="https://th.bing.com/th/id/OIP.zitOMmmOeGRTnFgAfKtavQHaCu?w=330&h=128&c=7&o=5&dpr=1.25&pid=1.7"
+                    class="card-img-top"
+                    alt="..."
+                    height="200px"
+                  />
+                  <div class="card-body">
+                    <div class="card-body">
+                      <Link to="/location" class="btn btn-primary">
+                        View Centers By location
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="col-sm-4 my-4">
+                <div class="card" style={{ width: "18rem" }}>
+                  <img
                     src="https://th.bing.com/th/id/OIP.kwRLgRPxwcK0tfHeuWkBNwHaEQ?w=270&h=180&c=7&o=5&dpr=1.25&pid=1.7"
                     class="card-img-top"
                     alt="..."
@@ -103,7 +120,7 @@ class AdminPage extends React.Component {
                   </div>
                 </div>
               </div>
-              <div className="col-sm-4 mt-3" style={{ height: "30rem" }}>
+              <div className="col-sm-4 my-4">
                 <div class="card" style={{ width: "18rem" }}>
                   <img
                     src="https://th.bing.com/th/id/OIP.CvJO4bNgqoGHkEWAGX6GqAHaFj?w=215&h=180&c=7&o=5&dpr=1.25&pid=1.7"
@@ -120,7 +137,7 @@ class AdminPage extends React.Component {
                   </div>
                 </div>
               </div>
-              <div className="col-sm-4 mt-3" style={{ height: "30rem" }}>
+              <div className="col-sm-4 my-4">
                 <div class="card" style={{ width: "18rem" }}>
                   <img
                     src="https://th.bing.com/th/id/OIP.fdFuUs54QTNx_5dka-4TAAHaDw?w=302&h=177&c=7&o=5&dpr=1.25&pid=1.7"
@@ -140,9 +157,6 @@ class AdminPage extends React.Component {
             </div>
           </div>
         </React.Fragment>
-        <button>
-          <Link to="/location">View</Link>
-        </button>
       </div>
     );
   }
