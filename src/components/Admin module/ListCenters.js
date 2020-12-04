@@ -1,17 +1,28 @@
 import React, { Component } from "react";
-import DiagnosticCenterService from "../Services/DiagnosticCenterService";
-import { Link, withRouter } from "react-router-dom";
+import DiagnosticCenterService from "../../Services/DiagnosticCenterService";
+import { Link, withRouter, Redirect } from "react-router-dom";
 
 class ListCenters extends React.Component {
   constructor(props) {
     super(props);
-
+    const tokenAdmin = localStorage.getItem("tokenAdmin");
+    let loggedIn = true;
+    if (tokenAdmin == null) {
+      loggedIn = false;
+    }
     this.state = {
+      loggedIn,
       centers: [],
+      searchTerm: "",
     };
     this.updateCenter = this.updateCenter.bind(this);
     this.deleteCenter = this.deleteCenter.bind(this);
+    this.editSearch = this.editSearch.bind(this);
   }
+
+  editSearch = (e) => {
+    this.setState({ searchTerm: e.target.value });
+  };
 
   componentDidMount() {
     DiagnosticCenterService.viewAllCenters().then((res) => {
@@ -34,21 +45,51 @@ class ListCenters extends React.Component {
   };
 
   render() {
+    if (this.state.loggedIn === false) {
+      return <Redirect to="/login" />;
+    }
     return (
       <div>
+        <nav
+          className="navbar navbar-dark bg-dark"
+          style={{
+            backgroundImage:
+              "linear-gradient(223.88deg, #848484 8.89%, #000000 94.31%)",
+          }}
+        >
+          <Link
+            to="/adminpage"
+            className="navbar-brand"
+            style={{ color: "white", fontSize: "30px", textDecoration: "none" }}
+          >
+            Admin
+          </Link>
+          <form className="form-inline">
+            <input
+              class="form-control mr-sm-2"
+              type="search"
+              placeholder="Search"
+              aria-label="Search"
+              onChange={this.editSearch}
+            />
+            <Link
+              to="/addcenter"
+              className="nav-link text-black mr-5"
+              style={{ color: "white", fontSize: "25px" }}
+            >
+              Add Center
+            </Link>
+            <Link
+              to="/logout"
+              className="nav-link text-black mr-5"
+              style={{ color: "white", fontSize: "25px" }}
+            >
+              Logout
+            </Link>
+          </form>
+        </nav>
         <h1 className="text-center">Diagnostic Center List</h1>
         <div className="row"></div>
-        <table>
-          <tr>
-            <td>
-              <button className="btn btn-primary my-1">
-                <Link to="/addcenter" style={{ color: "white" }}>
-                  Add Center
-                </Link>
-              </button>
-            </td>
-          </tr>
-        </table>
         <table className="table table-striped table-bordered">
           <thead>
             <tr>

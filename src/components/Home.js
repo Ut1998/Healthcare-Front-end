@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import FooterComponent from "./FooterComponent";
 import { Link } from "react-router-dom";
-import health3 from "./health3.jpg";
 
 class Home extends React.Component {
   constructor(props) {
@@ -20,29 +19,30 @@ class Home extends React.Component {
               fontSize: 30,
               width: "500px",
               color: "white",
-              backgroundColor: "#00adb5",
               borderRadius: "15px",
             }}
           >
             HealthCare Management System
           </h1>
           <form class="form-inline">
-            <button
-              class="btn btn-primary mr-sm-2"
-              type="submit"
-              style={{ color: "white", fontSize: 20 }}
-            >
-              SignUp
+            <button class="btn btn-primary mr-sm-2" type="submit">
+              <Link
+                to="/signup"
+                style={{ color: "white", fontSize: 20, textDecoration: "none" }}
+              >
+                SignUp
+              </Link>
             </button>
             <button class="btn btn-success my-2 my-sm-0" onClick={this.onClick}>
-              <Link to="/login" style={{ color: "white", fontSize: 20 }}>
+              <Link
+                to="/login"
+                style={{ color: "white", fontSize: 20, textDecoration: "none" }}
+              >
                 Log In
               </Link>
             </button>
           </form>
         </nav>
-        {/* <img src={health3} height="650px" width="1550px" />
-         */}
         <br />
         <br />
         <React.Fragment>

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
-import DiagnosticCenterService from "../Services/DiagnosticCenterService";
+import { Link, Redirect } from "react-router-dom";
+import DiagnosticCenterService from "../../Services/DiagnosticCenterService";
 
 const initialState = {
   name: "",
@@ -16,6 +16,14 @@ const initialState = {
 class AddCenter extends React.Component {
   constructor(props) {
     super(props);
+    const tokenAdmin = localStorage.getItem("tokenAdmin");
+    let loggedIn = true;
+    if (tokenAdmin == null) {
+      loggedIn = false;
+    }
+    this.state = {
+      loggedIn,
+    };
 
     this.state = initialState;
     this.onInputChangeHandler = this.onInputChangeHandler.bind(this);
@@ -77,8 +85,35 @@ class AddCenter extends React.Component {
   };
 
   render() {
+    if (this.state.loggedIn === false) {
+      return <Redirect to="/login" />;
+    }
     return (
       <div>
+        <nav
+          className="navbar navbar-dark bg-dark"
+          style={{
+            backgroundImage:
+              "linear-gradient(223.88deg, #848484 8.89%, #000000 94.31%)",
+          }}
+        >
+          <Link
+            to="/adminpage"
+            className="navbar-brand"
+            style={{ color: "white", fontSize: "30px", textDecoration: "none" }}
+          >
+            Admin
+          </Link>
+          <form className="form-inline">
+            <Link
+              className="nav-link text-black mr-5"
+              style={{ color: "white", fontSize: "25px" }}
+            >
+              Logout
+            </Link>
+          </form>
+        </nav>
+        <br />
         <div className="container">
           <div className="row">
             <div className="card col-md-6 offset-md-3 offset-md-3">
@@ -145,23 +180,27 @@ class AddCenter extends React.Component {
                     className="btn btn-success"
                     type="submit"
                     onClick={this.saveCenter}
-                  >
-                    Add Test
-                  </button>
-                  <button
-                    className="btn btn-success"
-                    type="submit"
-                    onClick={this.saveCenter}
-                    style={{ marginLeft: "10px" }}
+                    style={{ marginLeft: "10px", fontSize: "20px" }}
                   >
                     Save
                   </button>
                   <button
-                    type="reset"
-                    className="btn btn-danger"
-                    style={{ marginLeft: "10px" }}
+                    className="btn btn-info ml-2"
+                    type="submit"
+                    onClick={this.saveCenter}
+                    style={{ fontSize: "20px" }}
                   >
-                    <Link to="/mainpage" style={{ color: "white" }}>
+                    Add Test
+                  </button>
+                  <button
+                    type="reset"
+                    className="btn btn-danger ml-2"
+                    style={{ fontSize: "20px" }}
+                  >
+                    <Link
+                      to="/adminpage"
+                      style={{ color: "white", textDecoration: "none" }}
+                    >
                       Cancel
                     </Link>
                   </button>

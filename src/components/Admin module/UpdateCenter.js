@@ -1,12 +1,20 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import Axios from "axios";
-import DiagnosticCenterService from "../Services/DiagnosticCenterService";
+import DiagnosticCenterService from "../../Services/DiagnosticCenterService";
 import { withRouter } from "react-router-dom";
 
 class UpdateCenter extends React.Component {
   constructor(props) {
     super(props);
+    const tokenAdmin = localStorage.getItem("tokenAdmin");
+    let loggedIn = true;
+    if (tokenAdmin == null) {
+      loggedIn = false;
+    }
+    this.state = {
+      loggedIn,
+    };
 
     this.state = {
       centerId: this.props.match.params.centerId,
@@ -15,6 +23,7 @@ class UpdateCenter extends React.Component {
       contactEmail: "",
       address: "",
       servicesOffered: "",
+      loggedIn,
     };
     this.onInputChangeHandler = this.onInputChangeHandler.bind(this);
     this.updateCenter = this.updateCenter.bind(this);
@@ -61,6 +70,9 @@ class UpdateCenter extends React.Component {
   };
 
   render() {
+    if (this.state.loggedIn === false) {
+      return <Redirect to="/login" />;
+    }
     return (
       <div>
         <div className="container">
